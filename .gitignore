@@ -1,1 +1,2 @@
 app/__pycache__/*.*
+.terraform/providers/registry.terraform.io/hashicorp/aws/5.88.0/darwin_arm64/terraform-provider-aws_v5.88.0_x5

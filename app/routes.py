@@ -4,6 +4,10 @@ api_bp = Blueprint("api", __name__)
 
 items = {}
 
+@api_bp.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "Welcome to the API"}), 200
+
 @api_bp.route("/items", methods=["GET"])
 def get_items():
     return jsonify(items), 200
@@ -29,9 +33,20 @@ def update_item(item_id):
         return jsonify({"id": item_id, "data": items[item_id]}), 200
     return jsonify({"error": "Item not found"}), 404
 
+@api_bp.route("/items/<item_id>", methods=["PATCH"])
+def patch_item(item_id):
+    if item_id in items:
+        items[item_id].update(request.json)
+        return jsonify({"id": item_id, "data": items[item_id]}), 200
+    return jsonify({"error": "Item not found"}), 404
+
 @api_bp.route("/items/<item_id>", methods=["DELETE"])
 def delete_item(item_id):
     if item_id in items:
         del items[item_id]
         return jsonify({"message": "Item deleted"}), 200
     return jsonify({"error": "Item not found"}), 404
+
+@api_bp.route("/items/<item_id>", methods=["OPTIONS"])
+def options_item(item_id):
+    return jsonify({"methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]}), 200
